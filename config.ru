@@ -7,9 +7,9 @@ require 'git_adapter'
 require 'gritano'
 require 'gritano_grack'
 
-gritano_config = Gritano::Grack::Config.new('config.yml')
+gritano_config = Gritano::Grack::Config.new
 
-use Rack::Auth::Basic, "Gritano" do |username, password|
+use Gritano::Grack::Auth, "Gritano" do |username, password|
   Gritano::CLI.check_password(username, password, gritano_config.gritano_path, gritano_config.repo_path)
 end
 
