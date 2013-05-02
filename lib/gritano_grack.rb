@@ -36,13 +36,13 @@ module Gritano
       def valid?(auth)
         env = auth.instance_variable_get("@env")
         repo = /^\/(.*\.git)/.match(env["REQUEST_PATH"])[1]
+        repo_param = /^\/.*\.git\/(.*$)/.match(env["REQUEST_PATH"])[1]
         access = :wrong
-        if env["QUERY_STRING"] == "service=git-upload-pack"
+        if env["QUERY_STRING"] == "service=git-upload-pack" or repo_param == "git-upload-pack"
           access = :read
-        elsif env["QUERY_STRING"] == "service=git-receive-pack"
+        elsif env["QUERY_STRING"] == "service=git-receive-pack" or repo_param == "git-receive-pack"
           access = :write
         end
-
         config = Gritano::Grack::Config.new
         if Gritano::CLI.check_access(auth.username, repo, access, config.gritano_path, config.repo_path)
           super
