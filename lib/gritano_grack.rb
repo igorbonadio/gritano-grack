@@ -35,8 +35,8 @@ module Gritano
 
       def valid?(auth)
         env = auth.instance_variable_get("@env")
-        repo = /^\/(.*\.git)/.match(env["REQUEST_PATH"])[1]
-        repo_param = /^\/.*\.git\/(.*$)/.match(env["REQUEST_PATH"])[1]
+        repo = /^\/(.*\.git)/.match(env["REQUEST_URI"])[1]
+        repo_param = /^\/.*\.git\/(.*$)/.match(env["REQUEST_URI"])[1]
         access = :wrong
         if env["QUERY_STRING"] == "service=git-upload-pack" or repo_param == "git-upload-pack"
           access = :read
